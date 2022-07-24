@@ -15,7 +15,7 @@ jobs:
       # or install it during a build like we do here
       - run:
           name: Build docker image
-          command: docker build -t khteh/gorestapi:latest
+          command: docker build -t khteh/gorestapi:latest .
       - run:
           name: Login to docker hub
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
