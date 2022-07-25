@@ -23,7 +23,7 @@ type Fibonacci struct {
 	Error string
 }
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	greeting, _ := greetings.Greeting("")
+	greeting, _ := greetings.Greeting(r.URL.Query().Get("name"))
 	result := Index {
 		Title: "GoLang RESTful API",
 		Greeting: greeting,
