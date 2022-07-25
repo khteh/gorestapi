@@ -5,4 +5,8 @@
   <input type="submit" />
 </form>
 <hr />
+{{ if .Error }}
+<strong>Error: {{.Error}}</strong><br />
+{{ else }}
 <label>fibonacci({{.FibInput}}): {{.FibResult}}</label><br />
+{{ end }}

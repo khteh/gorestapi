@@ -10,7 +10,8 @@ import (
 	"github.com/khteh/greetings"
 )
 var templatePath = "templates/"
-var templates = template.Must(template.ParseFiles(templatePath+"fibonacci.html", templatePath+"index.html"))
+//var templates = template.Must(template.ParseFiles(templatePath+"fibonacci.html", templatePath+"index.html"))
+var templates = template.Must(template.ParseGlob(templatePath + "*.html"))
 var validPath = regexp.MustCompile("^/(fibonacci|home)/([a-zA-Z0-9]+)$")
 type Index struct {
 	Title string
@@ -20,6 +21,7 @@ type Fibonacci struct {
 	Title string
 	FibInput   uint32
 	FibResult uint64
+	Error string
 }
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	greeting, _ := greetings.Greeting("")
@@ -29,7 +31,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	e := templates.ExecuteTemplate(w, "index.html", result)
 	if e != nil {
-		log.Fatal(e)
+		//log.Fatal(e)
 		http.Error(w, e.Error(), http.StatusInternalServerError)
 	}
 }
@@ -41,8 +43,15 @@ func fibonacciHandler(w http.ResponseWriter, r *http.Request) {
 		//fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
 		n, err := strconv.ParseUint(r.FormValue("n"), 10, 32)
 		if err != nil {
-			log.Fatal(err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			if numError, ok := err.(*strconv.NumError); ok {
+				if numError.Err == strconv.ErrRange {
+					result.Error = fmt.Sprintf("Invalid input %s out of range!", r.FormValue("n"))
+				}
+			} else {
+				//log.Fatal(err) This stops the http server!
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
 		} else {
 			result.FibInput = uint32(n)
 			result.FibResult = fibonacci.Fibonacci(uint32(n))
@@ -50,7 +59,7 @@ func fibonacciHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	e := templates.ExecuteTemplate(w, "fibonacci.html", result)
 	if e != nil {
-		log.Fatal(e)
+		//log.Fatal(e)
 		http.Error(w, e.Error(), http.StatusInternalServerError)
 	}
 }
