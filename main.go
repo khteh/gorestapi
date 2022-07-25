@@ -39,7 +39,6 @@ func fibonacciHandler(w http.ResponseWriter, r *http.Request) {
 		Title: "Fibonacci",
 	}
 	if r.Method == http.MethodPost {
-		//fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
 		n, err := strconv.ParseUint(r.FormValue("n"), 10, 32)
 		if err != nil {
 			if numError, ok := err.(*strconv.NumError); ok {
