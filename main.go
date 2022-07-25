@@ -10,7 +10,6 @@ import (
 	"github.com/khteh/greetings"
 )
 var templatePath = "templates/"
-//var templates = template.Must(template.ParseFiles(templatePath+"fibonacci.html", templatePath+"index.html"))
 var templates = template.Must(template.ParseGlob(templatePath + "*.html"))
 var validPath = regexp.MustCompile("^/(fibonacci|home)/([a-zA-Z0-9]+)$")
 type Index struct {
