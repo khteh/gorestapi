@@ -1,7 +1,24 @@
 version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@3.1.4
+  slack: circleci/slack@4.10.1
+executors:
+  go:
+    docker:
+      - image: circleci/golang:latest
+references:
+  workspace_root: &workspace_root ~/workspace
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+defaults: &defaults # Default directory to run the steps in.
+  working_directory: *workspace_root
+
 jobs:
   build_and_test:
-    working_directory: ~/workspace
+    <<: *defaults
     docker:
       - image: circleci/golang:latest
     steps:
