@@ -1,32 +1,38 @@
 package main
+
 import (
 	"fmt"
+	"html"
+	"html/template"
 	"log"
+	"net/http"
 	"regexp"
 	"strconv"
-	"net/http"
-	"html/template"
+
 	"github.com/khteh/fibonacci"
 	"github.com/khteh/greetings"
 )
+
 var templatePath = "templates/"
 var templates = template.Must(template.ParseGlob(templatePath + "*.html"))
 var validPath = regexp.MustCompile("^/(fibonacci|home)/([a-zA-Z0-9]+)$")
+
 type Index struct {
-	Title string
+	Title    string
 	Greeting string
 }
 type Fibonacci struct {
-	Title string
-	FibInput   uint32
+	Title     string
+	FibInput  uint32
 	FibResult uint64
-	Error string
+	Error     string
 }
+
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	greeting, _ := greetings.Greeting(r.URL.Query().Get("name"))
-	result := Index {
-		Title: "GoLang RESTful API",
-		Greeting: greeting,
+	result := Index{
+		Title:    "GoLang RESTful API",
+		Greeting: html.EscapeString(greeting),
 	}
 	e := templates.ExecuteTemplate(w, "index.html", result)
 	if e != nil {
@@ -35,7 +41,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func fibonacciHandler(w http.ResponseWriter, r *http.Request) {
-	result := Fibonacci {
+	result := Fibonacci{
 		Title: "Fibonacci",
 	}
 	if r.Method == http.MethodPost {
@@ -77,6 +83,7 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 		}
 	}
 }
+
 // healthz is a liveness probe.
 func healthz(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
