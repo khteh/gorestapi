@@ -21,15 +21,15 @@ func Greeting(name string) (string, error) {
 	tz, _ := time.LoadLocation("Asia/Singapore")
 	if name != "" {
 		//message := fmt.Sprintf("Hi, %v. Welcome!", name)
-		text := `Hello %v! It is %s now.
-				 %s`
-		//message = fmt.Sprintf("Hello %v! It is %s now.\n", name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"))
-		message = fmt.Sprintf(text, name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
+		//text := `Hello %v! It is %s now.
+		//		 %s`
+		message = fmt.Sprintf("Hello %v! It is %s now.\n%s", name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
+		//message = fmt.Sprintf(text, name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 	} else {
-		text := `Hello! It is %s now.
-				   %s`
-		//message = fmt.Sprintf("Hello! It is %s now.\n", time.Now().In(tz).Format("02-Jan-2006 15:04:05"))
-		message = fmt.Println(text, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
+		//text := `Hello! It is %s now.
+		//		   %s`
+		message = fmt.Sprintf("Hello! It is %s now.\n", time.Now().In(tz).Format("02-Jan-2006 15:04:05"))
+		//message = fmt.Println(text, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 	}
 	//message += quote.Go()
 	return message, nil
