@@ -1,24 +1,29 @@
 package greetings
+
 import (
-	"fmt"
-	"rsc.io/quote"
 	"errors"
+	"fmt"
 	"math/rand"
 	"time"
+
+	"rsc.io/quote"
 )
+
 // init sets initial values for variables used in the function
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
-// In Go, a function whose name starts with a capital letter can be called by a function not in the same package. 
+
+// In Go, a function whose name starts with a capital letter can be called by a function not in the same package.
 // This is known in Go as an exported name. For more about exported names, see Exported names in the Go tour.
 func Greeting(name string) (string, error) {
 	message := ""
+	tz, _ := time.LoadLocation("Asia/Singapore")
 	if name != "" {
 		//message := fmt.Sprintf("Hi, %v. Welcome!", name)
-		message = fmt.Sprintf("Hello %v! %s\n", name, quote.Go())
+		message = fmt.Sprintf("Hello %v! It is %s now. %s\n", name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 	} else {
-		message = fmt.Sprintf("Hello! %s\n", quote.Go())
+		message = fmt.Sprintf("Hello! It is %s now. %s\n", time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 	}
 	return message, nil
 }
@@ -36,8 +41,8 @@ func Greetings(names []string) (map[string]string, error) {
 	}
 	return messages, nil
 }
-func randomFormat() string  {
-	formats := []string {
+func randomFormat() string {
+	formats := []string{
 		"Hi, %v. Welcome!",
 		"Great to see you, %v!",
 		"Hail, %v! Well met!",
