@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html"
 	"html/template"
 	"log"
 	"net/http"
@@ -19,7 +18,7 @@ var validPath = regexp.MustCompile("^/(fibonacci|home)/([a-zA-Z0-9]+)$")
 
 type Index struct {
 	Title    string
-	Greeting string
+	Greeting template.HTML
 }
 type Fibonacci struct {
 	Title     string
@@ -32,7 +31,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	greeting, _ := greetings.Greeting(r.URL.Query().Get("name"))
 	result := Index{
 		Title:    "GoLang RESTful API",
-		Greeting: html.EscapeString(greeting),
+		Greeting: template.HTML(greeting),
 	}
 	e := templates.ExecuteTemplate(w, "index.html", result)
 	if e != nil {
