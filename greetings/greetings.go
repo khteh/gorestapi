@@ -20,18 +20,12 @@ func Greeting(name string) (string, error) {
 	message := ""
 	tz, _ := time.LoadLocation("Asia/Singapore")
 	if name != "" {
-		//message := fmt.Sprintf("Hi, %v. Welcome!", name)
-		//text := `Hello %v! It is %s now.
-		//		 %s`
-		message = fmt.Sprintf("Hello %v! It is %s now.<br>%s", name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
+		message = fmt.Sprintf("Hello %v! It is %s now.<br>%s</br>", name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 		//message = fmt.Sprintf(text, name, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 	} else {
-		//text := `Hello! It is %s now.
-		//		   %s`
 		message = fmt.Sprintf("Hello! It is %s now.<br>%s", time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 		//message = fmt.Println(text, time.Now().In(tz).Format("02-Jan-2006 15:04:05"), quote.Go())
 	}
-	//message += quote.Go()
 	return message, nil
 }
 func Greetings(names []string) (map[string]string, error) {
